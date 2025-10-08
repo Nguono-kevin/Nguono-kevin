@@ -85,4 +85,16 @@ workoutForm.addEventListener('submit', function (e) {
 
   // Reset form
   workoutForm.reset();
+  fetch("http://localhost/sports-tracker/BACKEND/get_user.php")
+  .then(res => res.json())
+  .then(data => {
+    if (!data.error) {
+      document.getElementById("userName").textContent = data.name;
+      document.getElementById("userEmail").textContent = data.email;
+    } else {
+      alert("Please login first!");
+      window.location.href = "login.html";
+    }
+  });
+
 });
