@@ -1,10 +1,10 @@
 <?php
 // db_connect.php
 
-$host = "localhost";
+$host = "127.0.0.1";
 $user = "root"; // your MySQL username
-$pass = "";     // your MySQL password (leave empty if none)
-$dbname = "sports_tracker"; // your database name
+$pass = "#Nguono_22";     // your MySQL password (leave empty if none)
+$dbname = "mydb"; // your database name
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
