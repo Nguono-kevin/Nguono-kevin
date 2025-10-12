@@ -366,7 +366,7 @@ form {
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
 
-    const res = await fetch(`${API_URL}/auth/register`, {
+    const res = await fetch(`${API_URL}/signup.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password })
@@ -387,7 +387,7 @@ form {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
-    const res = await fetch(`${API_URL}/auth/login`, {
+    const res = await fetch(`${API_URL}/login.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
@@ -397,7 +397,7 @@ form {
       const data = await res.json();
       localStorage.setItem('token', data.token);
       alert("Login successful!");
-      window.location.href = "dashboard.html";
+      window.location.href = "Dashboard.html";
     } else {
       alert("Login failed!");
     }
