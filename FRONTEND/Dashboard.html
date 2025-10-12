@@ -195,11 +195,19 @@ canvas {
   <!-- HEADER -->
   <header class="app-header">
     <h1>🏆 MySport Tracker</h1>
+   
     <div class="user-info">
-      <i class="fa-solid fa-circle-user user-icon"></i>
+      
+        <ul class="dropdown">
+                <li><a href="home.html" onclick="showPage('home')">Home</a></li>
+               
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li> 
+            </ul>
       <span id="welcomeUser"></span>
       <button id="logoutBtn">Logout</button>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   </header>
