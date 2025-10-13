@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require 'db_connect.php';
-require 'vendor/autoload.php'; // Load JWT library
+require 'vendor/login.php'; // Load JWT library
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
