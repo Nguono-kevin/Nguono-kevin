@@ -1,13 +1,19 @@
 <?php
-// login.php
 header('Content-Type: application/json');
-session_start();
 require 'db_connect.php';
+require 'vendor/autoload.php'; // Load JWT library
 
-$email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$secretKey = 'your-secret-key'; // Use a strong, private key
+
+$input = json_decode(file_get_contents('php://input'), true);
+$email = $input['email'] ?? '';
+$password = $input['password'] ?? '';
 
 if (empty($email) || empty($password)) {
+    http_response_code(400);
     echo json_encode(["status" => "error", "message" => "All fields are required"]);
     exit;
 }
@@ -21,15 +27,31 @@ if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 
     if (password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['name'] = $user['name'];
-        $_SESSION['email'] = $user['email'];
+        $payload = [
+            'iss' => 'http://localhost', // issuer
+            'aud' => 'http://localhost', // audience
+            'iat' => time(),             // issued at
+            'exp' => time() + 3600,      // expires in 1 hour
+            'data' => [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email']
+            ]
+        ];
 
-        echo json_encode(["status" => "success", "message" => "Login successful"]);
+        $jwt = JWT::encode($payload, $secretKey, 'HS256');
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Login successful",
+            "token" => $jwt
+        ]);
     } else {
+        http_response_code(401);
         echo json_encode(["status" => "error", "message" => "Incorrect password"]);
     }
 } else {
+    http_response_code(404);
     echo json_encode(["status" => "error", "message" => "User not found"]);
 }
 
