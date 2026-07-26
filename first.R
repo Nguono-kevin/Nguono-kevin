@@ -1,0 +1,41 @@
+#Kevin Nguono-HDSS
+#21/05/2026
+x=2
+y=9
+z=x+y
+print(z)
+
+apples=c(2,3,5)
+bananas=apples*4
+print(bananas)
+
+fruit=c("orange","mango","strawberry")
+count=c(12,30,15)
+fruit_data=data.frame(Fruits=fruit,Count=count)
+print(fruit_data)
+
+county=c("Siaya","Busia","Kisumu")
+population=c(5000,6000,7000)
+test_population=data.frame(County=county,Population=population)
+print(test_population)
+
+fruit_data$Fruits
+
+str(fruit_data)
+
+plot(1:length(fruit_data$Count),
+     fruit_data$Fruits,
+     type = "p",
+     xaxt = "n",
+     xlab = "Fruit",
+     ylab = "Count",
+     main = "Fruit Counts",
+     col = "blue",
+     pch = 19)
+
+axis(1,
+     at = 1:length(fruit_data$Count),
+     labels = fruit_data$Fruits,
+     las = 2)
+
+     
