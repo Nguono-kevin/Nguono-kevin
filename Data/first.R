@@ -24,7 +24,7 @@ fruit_data$Fruits
 str(fruit_data)
 
 plot(1:length(fruit_data$Count),
-     fruit_data$Fruits,
+     fruit_data$Count,
      type = "p",
      xaxt = "n",
      xlab = "Fruit",
@@ -35,7 +35,5 @@ plot(1:length(fruit_data$Count),
 
 axis(1,
      at = 1:length(fruit_data$Count),
-     labels = fruit_data$Fruits,
-     las = 2)
+     labels = fruit_data$Fruits)
 
-     
