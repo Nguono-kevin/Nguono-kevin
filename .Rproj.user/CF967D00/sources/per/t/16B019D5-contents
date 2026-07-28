@@ -1,0 +1,230 @@
+---
+#title: "Tutorial_3"
+#author: "Oliver Towett"
+#date: "`r Sys.Date()`"
+#output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This tutorial will cover ggplot2
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+#install.packages("ggplot2")
+```
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+penguins <-read.csv("C:/Users/user/OneDrive/Desktop/R/R_Course/Data/penguins.csv")
+```
+
+```{r}
+ggplot(data=penguins)
+```
+```{r}
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g))
+```
+```{r}
+#data plotted
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g)) + geom_point()
+```
+```{r}
+ggplot() + geom_point(data=penguins, aes(x=flipper_length_mm, y=body_mass_g))
+
+```
+##Aesthetic
+```{r}
+
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, colour =species)) + geom_point()
+```
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, colour =island)) + geom_point()
+```
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g)) + geom_point(colour="blue")
+```
+
+```{r}
+#shape by species
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, shape=species)) + geom_point()
+```
+```{r}
+#shape by island
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, shape=island)) + geom_point()
+```
+```{r}
+#shape and colour by species
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, shape=species, colour=species)) + geom_point()
+```
+```{r}
+#shape and colour by island
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, shape=island, colour=island)) + geom_point()
+```
+
+```{r}
+#shape and colour by species
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, shape=species, colour=island)) + geom_point()
+```
+##Geoms
+```{r}
+ggplot(data=penguins, aes(x=species))+ geom_bar()
+```
+##Boxplot
+```{r}
+ggplot(data=penguins, aes(x=species, y=bill_length_mm)) + geom_boxplot()
+```
+
+##Line plot
+```{r}
+ggplot(data=penguins, aes(x=year, y=flipper_length_mm, colour=species)) + geom_line()
+```
+##Density plot
+```{r}
+ggplot(data=penguins, aes(x=body_mass_g, fill=species)) + geom_density()
+
+```
+```{r}
+##fixing the hidden overlap
+ggplot(data=penguins, aes(x=body_mass_g, fill=species)) + geom_density(alpha=0.1)
+```
+
+
+```{r}
+ggplot(data=penguins, aes(x=body_mass_g, colour=species)) + geom_density()
+```
+
+##Histogram
+```{r}
+ggplot(data=penguins, aes(x=body_mass_g)) + 
+  geom_histogram(binwidth = 100,fill="blue", colour="black")
+```
+```{r}
+ggplot(data=penguins, aes(x=body_mass_g)) + 
+  geom_histogram(binwidth = 100,fill="blue", colour="red")
+```
+
+```{r}
+ggplot(data=penguins, aes(x=body_mass_g)) + 
+  geom_histogram(binwidth = 100,fill="green", colour="black")
+```
+##Violin Plot
+```{r}
+ggplot(data=penguins, aes(x=species, y=bill_depth_mm, fill=species)) + 
+  geom_violin()
+```
+```{r}
+ggplot(data=penguins, aes(x=species, y=bill_depth_mm)) + 
+  geom_violin(fill="blue")
+```
+
+##Fixing lineplot
+```{r}
+penguins_summary<-penguins %>%
+  group_by(species, sex, year) %>% 
+  summarise(mean_body_mass_g=mean(body_mass_g,na.rm = TRUE)) %>%
+  select(species, sex, mean_body_mass_g, year) %>%
+  filter(!is.na(sex))
+
+head(penguins_summary)
+```
+
+```{r}
+ggplot(data=penguins_summary, aes(x=year, y=mean_body_mass_g, colour=species)) + 
+  geom_line()
+```
+```{r}
+ggplot(data=penguins_summary, aes(x=year, y=mean_body_mass_g, colour=species, linetype=sex)) +   geom_line()
+```
+```{r}
+ggplot(data=penguins_summary, aes(x=year, y=mean_body_mass_g, colour=species, linetype=sex)) +   geom_line() + geom_point()
+```
+
+##Facets
+```{r}
+ggplot(data=penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +   geom_point() +
+  facet_wrap(~species)
+```
+```{r}
+ggplot(data=penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +   geom_point() +
+  facet_grid(year ~species)
+```
+##Labels
+```{r}
+ggplot(penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +
+  geom_point() +
+  labs(title = "Bill Length vs. Flipper Length",
+       subtitle = "Relationship between bill length and flipper length in penguins",
+       x="Bill Length (mm)",
+       y="Flipper Length (mm)",
+       colour="Species")
+```
+
+##Themes
+```{r}
+ggplot(data=penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +   geom_point() +
+ theme_bw()
+```
+```{r}
+ggplot(data=penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +   geom_point() +
+ theme_minimal()
+```
+
+```{r}
+ggplot(data=penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +   geom_point() +
+ theme_dark()
+```
+
+```{r}
+#install.packages("ggthemes")
+library(ggthemes)
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, colour=species)) +   geom_point() +
+  theme_economist()
+```
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, colour=species)) +   geom_point() +
+  theme_stata()
+```
+
+##Position
+
+
+##Arranging plots
+```{r}
+#install.packages("patchwork")
+library(patchwork)
+#Create individual ggplot2 plots
+plot1<-ggplot(data=penguins, aes(x=bill_length_mm, y=bill_depth_mm, colour=species)) +   geom_point() +
+  labs(title = "Bill Length vs. Bill Depth")
+
+plot2<-ggplot(data=penguins, aes(x=flipper_length_mm, y=body_mass_g, colour=species)) +   geom_point() +
+  labs(title = "Flipper Length vs. Body Mass")
+
+plot3<-ggplot(data=penguins, aes(x=island, fill=species)) + 
+  geom_bar() +
+  labs(title = "Species Distribution by Island")
+
+plot4<-ggplot(data=penguins, aes(x=species, y=bill_length_mm)) +
+  geom_boxplot() +
+  labs(title = "Bill Lenth Distribution by Species")
+
+#Combine and arrange the plots using Patchwork
+combined_plots<-(plot1|plot2)/(plot3|plot4)
+
+#Display the combined plot
+combined_plots
+
+```
+

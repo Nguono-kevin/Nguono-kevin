@@ -1,0 +1,27 @@
+#| Function              | Meaning / Purpose                                                                              | Example from script                                             |
+ # | --------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+ # | `library()`           | Loads an installed package into the current R session so that its functions can be used.       | `library(dplyr)` loads the **dplyr** package.                   |
+ ## | `read.csv()`          | Imports a CSV (Comma-Separated Values) file into R as a data frame.                            | `covid19 <- read.csv("data/covid19_data.csv")`                  |
+  #| `dim()`               | Shows the dimensions of a dataset: number of rows and columns.                                 | `dim(covid19)`                                                  |
+  #| `str()`               | Displays the structure of a dataset, including variable names, data types, and sample values.  | `str(covid19)`                                                  |
+  #| `summary()`           | Provides a statistical summary of variables (minimum, maximum, mean, median, quartiles, etc.). | `summary(covid19)`                                              |
+ # | `head()`              | Displays the first six rows of a dataset by default. Useful for checking data.                 | `head(ireland_covid_data)`                                      |
+ # | `filter()`            | Selects rows that meet specific conditions.                                                    | `filter(countries_and_territories == "Ireland")`                |
+  #| `%>%` (Pipe operator) | Passes the output of one function directly into another function, making code easier to read.  | `covid19 %>% arrange(population_2019)`                          |
+  #| `arrange()`           | Sorts rows of a dataset based on one or more variables.                                        | `arrange(population_2019)`                                      |
+ # | `desc()`              | Sorts values in descending order (largest to smallest).                                        | `arrange(desc(mortality_rate))`                                 |
+ # | `mutate()`            | Creates new variables or modifies existing variables in a dataset.                             | `mutate(mortality_rate = (deaths/population_2019)*1000)`        |
+ # | `select()`            | Chooses specific columns from a dataset.                                                       | `select(year_month, countries_and_territories, mortality_rate)` |
+  #| `group_by()`          | Groups data based on one or more variables before applying summary calculations.               | `group_by(continent)`                                           |
+  #| `summarise()`         | Calculates summary statistics after grouping, such as mean, sum, or count.                     | `summarise(total_cases=sum(cases))`                             |
+  #| `sum()`               | Adds all numeric values together.                                                              | `sum(cases, na.rm=TRUE)`                                        |
+  #| `mean()`              | Calculates the average value of a variable.                                                    | `mean(deaths, na.rm=TRUE)`                                      |
+ # | `count()`             | Counts the number of observations in each group.                                               | `count(countries_and_territories)`                              |
+ # | `write.csv()`         | Saves a dataset from R into a CSV file.                                                        | `write.csv(mortality_covid19,"mortality_covid19.csv")`          |
+  #| `save()`              | Saves an R object in an RData file format for later use.                                       | `save(mortality_covid19,file="mortality.RData")`                |
+  #| `saveRDS()`           | Saves a single R object while preserving its structure.                                        | `saveRDS(mortality_covid19,"mortality.rds")`                    |
+ # | `na.rm = TRUE`        | Removes missing values (`NA`) before performing calculations.                                  | `mean(deaths, na.rm=TRUE)`                                      |
+  #| `%in%`                | Checks whether values belong to a list of specified values.                                    | `country %in% c("Kenya","Uganda")`                              |
+  #| `c()`                 | Combines multiple values into a vector.                                                        | `c("Kenya","Uganda","Tanzania")`                                |
+  #| `length()`            | Returns the number of elements in an object.                                                   | `length(countries)`                                             |
+  

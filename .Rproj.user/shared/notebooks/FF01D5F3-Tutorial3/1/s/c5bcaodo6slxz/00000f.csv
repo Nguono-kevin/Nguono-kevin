@@ -1,0 +1,1 @@
+"0","ggplot(data=penguins_summary, aes(x=year, y=mean_body_mass_g, colour=species, linetype=sex)) +   geom_line() + geom_point()"

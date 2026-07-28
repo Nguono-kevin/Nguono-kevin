@@ -1,0 +1,195 @@
+---
+title: "Tutorial 3 Assignment"
+author: "Kevin Nguono"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+```{r data-load}
+Covid_19 <-Covid_19 <-read.csv("C:/Users/user/OneDrive/Desktop/R/R_Course/Data/covid19_data.csv")
+
+```
+```{r Dimension of the dataset dim()}
+#Dimension of the dataset dim("_var")
+dim(Covid_19)
+```
+```{r structure and summary}
+#Rows=2214 & columns=8
+#Dataset Structure str("_var")
+str("Covid_19")
+#Character that is chr()
+#Summary of dataset
+summary("Covid_19")
+#Maximum Value is 8
+```
+```{r Arrange per population }
+# Arrange by population_2019
+Covid_19 %>%
+  arrange(population_2019) %>%
+  head()
+```
+```{r Filtering}
+#  Filter for Ireland 
+ireland_covid_data <- Covid_19 %>%
+  filter(countries_and_territories == "Ireland")
+head(ireland_covid_data)
+```
+```{r Filtering one}
+
+
+#  Filter for East African countries 
+east_africa_covid_data <- Covid_19 %>%
+  filter(countries_and_territories %in% c("Kenya", "Uganda", "Tanzania",
+                                          "Rwanda", "Burundi"))
+
+head(east_africa_covid_data)
+```
+```{r Mortality rate}
+# Create mortality_rate variable 
+mortality_covid19 <- Covid_19 %>%
+  mutate(mortality_rate = (deaths / population_2019) * 1000)
+
+head(mortality_covid19)
+```
+```{r Saving}
+#saving
+save(mortality_covid19,
+     file = "mortality_covid19.RData")
+```
+
+
+```{r  arranging mortality rate}
+# Arrange mortality_covid19 by mortality_rate (descending)
+  mortality_covid19 %>%
+  arrange(desc(mortality_rate)) %>%
+  head()
+# country and year_month with the highest mortality rate
+  #Country   :Year_month :rate
+  #San_merino:2020-03 :  0.7256262
+```
+```{r Specific Mortalitry}
+
+#  Select specific columns 
+mortality_selected <- mortality_covid19 %>%
+  select(year_month,
+         countries_and_territories,
+         mortality_rate)
+
+head(mortality_selected)
+
+
+```
+```{r Group by country}
+#  Group by country and count observations 
+monthly_data_count <- Covid_19 %>%
+  group_by(countries_and_territories) %>%
+  count()
+
+monthly_data_count
+```
+```{r Smallest Mortality}
+#  Arrange monthly_data_count to find smallest count 
+monthly_data_count %>%
+  arrange(n)
+head(1)
+```
+```{r Mean deaths_Ireland}
+# Task 15: Mean deaths in Ireland
+#option 1
+ireland_covid_data %>%
+  summarise(mean_deaths = mean(deaths, na.rm = TRUE))
+
+# Comment: Mean monthly deaths = 177.4167
+#option 2
+ireland_covid_data %>%
+  summarise(mean_deaths = mean(deaths))
+```
+```{r Total_cases}
+# Task 16: Total cases by continent
+
+continent_cases <- Covid_19 %>%
+  group_by(continent) %>%
+  summarise(total_cases = sum(cases, na.rm = TRUE))
+
+continent_cases
+
+continent_cases %>%
+  arrange(desc(total_cases))
+```
+```{r Cases in selected contoinent}
+# Task 18: Highest monthly cases in Europe and America
+
+Europe_America_cases <- Covid_19 %>%
+  filter(continent %in% c("Europe", "America","Africa")) %>%
+  group_by(year_month, continent) %>%
+  summarise(total_cases = sum(cases, na.rm = TRUE),
+            .groups = "drop") %>%
+  arrange(continent, desc(total_cases))
+
+Europe_America_cases
+
+```
+```{r Highest Month}
+# Highest month for Europe
+Europe_America_cases %>%
+  filter(continent == "Europe") %>%
+  head(1)
+
+# Highest month for America
+Europe_America_cases %>%
+  filter(continent == "America") %>%
+  head(1)
+
+# Highest month for America
+Europe_America_cases %>%
+  filter(continent == "Africa") %>%
+  head(1)
+```
+```{r Fatality Percentage}
+# Task 19: Percentage case fatality
+case_fatality <- Covid_19 %>%
+  filter(continent %in% c("Africa", "Europe")) %>%
+  group_by(countries_and_territories) %>%
+  summarise(
+    total_cases = sum(cases, na.rm = TRUE),
+    total_deaths = sum(deaths, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    percentage_case_fatality =
+      (total_deaths / total_cases) * 100
+  ) %>%
+  arrange(desc(percentage_case_fatality))
+
+case_fatality
+
+# Country with highest percentage case fatality
+case_fatality %>%
+  head(1)
+#Isle_of_Man    cases=370 deaths 25 pctof fatality=6.76
+```
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

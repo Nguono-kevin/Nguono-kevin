@@ -1,0 +1,7 @@
+"0","penguins_summary<-penguins %>%"
+"0","  group_by(species, sex, year) %>% "
+"0","  summarise(mean_body_mass_g=mean(body_mass_g,na.rm = TRUE)) %>%"
+"0","  select(species, sex, mean_body_mass_g, year) %>%"
+"0","  filter(!is.na(sex))"
+"0",""
+"0","head(penguins_summary)"

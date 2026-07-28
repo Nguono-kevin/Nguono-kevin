@@ -1,0 +1,7 @@
+"0","ggplot(penguins, aes(x=bill_length_mm, y=flipper_length_mm, colour=species)) +"
+"0","  geom_point() +"
+"0","  labs(title = ""Bill Length vs. Flipper Length"","
+"0","       subtitle = ""Relationship between bill length and flipper length in penguins"","
+"0","       x=""Bill Length (mm)"","
+"0","       y=""Flipper Length (mm)"","
+"0","       colour=""Species"")"

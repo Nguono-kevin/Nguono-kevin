@@ -1,0 +1,292 @@
+---
+title: "Tutorial_3_Assignment"
+author: "Kevin Nguono"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+```{r loading packages}
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+```
+```{r data load}
+gapminder <-read.csv("C:/Users/user/OneDrive/Desktop/R/R_Course/Data/gapminder_data.csv")
+```
+```{r dataset check}
+# Check dataset
+head(gapminder)
+str(gapminder)
+```
+```{r Scatter plot}
+#Task 4: Scatter plot Life Expectancy vs GDP per capita
+ggplot(gapminder,
+       aes(x = lifeExp,
+           y = gdpPercap)) +
+  geom_point()
+
+```
+```{r Scatter plot}
+# Task 5: Colour scatter plot by continent
+ggplot(gapminder,
+       aes(x = lifeExp,
+           y = gdpPercap,
+           colour = continent)) +
+  geom_point()
+
+
+```
+```{r Transform}
+# Task 6: Transform GDP using log10
+ggplot(gapminder,
+       aes(x = lifeExp,
+           y = log10(gdpPercap),
+           colour = continent)) +
+  geom_point()
+
+```
+
+
+
+```{r Facet continet}
+# Task 7: Facet by continent
+ggplot(gapminder,
+       aes(x = lifeExp,
+           y = log10(gdpPercap),
+           colour = continent)) +
+  geom_point() +
+  facet_grid(~continent)
+```
+```{r Plot_1}
+# Task 8: Add theme and save as plot1
+plot1 <- ggplot(gapminder,
+                aes(x = lifeExp,
+                    y = log10(gdpPercap),
+                    colour = continent)) +
+  geom_point() +
+  facet_grid(~continent) +
+  theme_minimal() +
+  labs(
+    title = "Life Expectancy vs GDP per Capita",
+    x = "Life Expectancy",
+    y = "Log10 GDP per Capita"
+  )
+
+plot1
+
+```
+```{r Density Plot echo=FALSE}
+# Task 9: Density plot of Life Expectancy by continent
+ggplot(gapminder,
+       aes(x = lifeExp,
+           fill = continent)) +
+  geom_density(alpha = 0.5) +
+  theme_minimal()
+```
+```{r Plot_2}
+# Task 10: Life expectancy over time by country
+plot2 <- ggplot(gapminder,
+                aes(x = year,
+                    y = lifeExp,
+                    colour = country)) +
+  geom_line() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(
+    title = "Life Expectancy Over Time",
+    x = "Year",
+    y = "Life Expectancy"
+  )
+
+plot2
+```
+```{r GDP per capita _2007 }
+# Task 11: GDP per capita in 2007 by continent
+gapminder_2007 <- gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(mean_gdp = mean(gdpPercap,
+                            na.rm = TRUE))
+
+
+gapminder_2007
+```
+```{r Point plot of mean GDP}
+# Task 12: Point plot of mean GDP by continent
+ggplot(gapminder_2007,
+       aes(x = continent,
+           y = mean_gdp,
+           colour = continent)) +
+  geom_point()
+
+
+
+```
+
+
+
+```{r Bar plot of mean}
+# Task 13: Bar plot of mean GDP by continent
+ggplot(gapminder_2007,
+       aes(x = continent,
+           y = mean_gdp,
+           fill = continent)) +
+  geom_col() +
+  labs(
+    title = "Mean GDP per Capita in 2007",
+    x = "Continent",
+    y = "Mean GDP per Capita"
+  ) +
+  theme_minimal()
+
+```
+```{r Summay dataset}
+# Task 14: Summary dataset by continent and year
+gapminder_summary <- gapminder %>%
+  group_by(continent, year) %>%
+  summarise(
+    mean_gdp = mean(gdpPercap, na.rm = TRUE),
+    mean_lifeExp = mean(lifeExp, na.rm = TRUE)
+  )
+```
+
+
+
+```{r Line plot}
+
+# Task 15: Line plot mean life expectancy
+
+plot3 <- ggplot(gapminder_summary,
+                aes(x = year,
+                    y = mean_lifeExp,
+                    colour = continent)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(
+    title = "Mean Life Expectancy by Continent",
+    x = "Year",
+    y = "Mean Life Expectancy"
+  )
+
+plot3
+```
+```{r Dataset for Kenya}
+# Task 16: Kenya dataset
+kenya_gapminder <- gapminder %>%
+  filter(country == "Kenya")
+
+
+```
+
+
+
+```{r Trend of GDP in Kenya}
+# Task 17: Kenya GDP trend
+ggplot(kenya_gapminder,
+       aes(x = year,
+           y = gdpPercap)) +
+  geom_line(color = "blue") +
+  geom_point(color = "blue") +
+  labs(
+    title = "GDP per Capita in Kenya",
+    x = "Year",
+    y = "GDP per Capita"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r Decrement for life expectancy}
+# Task 18: Identify decreasing life expectancy
+gapminder_decline <- gapminder %>%
+  filter(year %in% c(1997,2002,2007),
+         diff_lifeExp < 0)
+```
+
+
+
+
+```{r Life expectancy bar plot}
+# Task 19: Bar plot of life expectancy decline
+ggplot(gapminder_decline,
+       aes(x = country,
+           y = diff_lifeExp,
+           fill = country)) +
+  geom_col() +
+  facet_grid(~year,
+             scales = "free_x") +
+  theme(
+    axis.text.x =
+      element_text(angle = 90,
+                   vjust = 0.5,
+                   hjust = 1)
+  )
+
+```
+```{r Plot_4}
+# Task 20: Final version saved as plot4
+plot4 <- ggplot(gapminder_decline,
+                aes(x = country,
+                    y = diff_lifeExp,
+                    fill = country)) +
+  geom_col() +
+  facet_grid(~year,
+             scales = "free_x") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.x =
+      element_text(angle = 90,
+                   vjust = 0.5,
+                   hjust = 1)
+  ) +
+  labs(
+    title = "Countries with Declining Life Expectancy",
+    x = "Country",
+    y = "Reduction in Life Expectancy"
+  )
+
+
+plot4
+```
+```{r Combine plot}
+# Task 21: Combine four plots using patchwork
+combined_plot <- (plot1 | plot2) /
+  (plot3 | plot4)
+
+combined_plot
+
+```
+
+```{r saving Combined figures}
+# Task 22: Save combined figure
+ggsave("gapminder_combined_plot.png",
+       combined_plot,
+       width = 12,
+       height = 10)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

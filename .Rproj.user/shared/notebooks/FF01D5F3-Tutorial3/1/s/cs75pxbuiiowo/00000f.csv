@@ -1,0 +1,1 @@
+"0","ggplot(data=penguins, aes(x=species, y=bill_length_mm)) + geom_boxplot()"
